@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <Python.h>
 
 /**
  * print_python_list_info - prints info about python lists
  * @p: address of pyobject struct
- * Done by: Mekonen Abera
- * Return: Nothig
  */
 void print_python_list_info(PyObject *p)
 {
