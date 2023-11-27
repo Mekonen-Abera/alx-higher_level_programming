@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-"""The N queens puzzle is the challenge of placing N non-attacking queens on an N×N chessboard
- Write a program that solves the N queens problem.
+"""The N queens puzzle is the challenge of placing 
+N non-attacking queens on an N×N chessboard
+Write a program that solves the N queens problem.
 
 Determines all possible solutions to placing N
 N non-attacking queens on an NxN chessboard.
+
 Example:
     $ ./101-nqueens.py N
 
