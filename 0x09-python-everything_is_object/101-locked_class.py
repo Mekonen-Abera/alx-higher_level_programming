@@ -1,9 +1,18 @@
 #!/usr/bin/python3
-class LockedClass:
-    __slots__ = ['first_name']
+"""Define a class LockedClass"""
 
-    def __setattr__(self, name, value):
-        if name == 'first_name':
-            self.__dict__[name] = value
-        else:
-            raise AttributeError("You Cannot create new instance attribute")
+
+class LockedClass:
+    """
+    Denied the user from dynamically creating new instance attributes,
+    except if the new instance attribute is called first_name.
+
+    first_name (str): first name of something.
+    """
+
+    __slots__ = ["first_name"]
+
+    def __init__(self):
+        """Creates new locked class instances."""
+
+        self.first_name = "first_name"
