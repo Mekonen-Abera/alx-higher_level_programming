@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-""" Write a class MyList that inherits from list:
-   that prints the list, but sorted (ascending sort)
-   assume that all the elements of the list will be of type int"""
+"""Define a class MyList that inherits from list"""
 
 
 class MyList(list):
