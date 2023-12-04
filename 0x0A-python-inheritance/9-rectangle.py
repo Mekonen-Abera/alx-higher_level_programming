@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-""" Write a fuction that defines a class Rectangle 
-that inherits from BaseGeometry."""
-
+"""Rectangle class Module"""
 BaseGeometry = __import__("7-base_geometry").BaseGeometry
 
 
