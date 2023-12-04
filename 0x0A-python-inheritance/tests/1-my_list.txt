@@ -1,36 +1,68 @@
-Using class "MyList"
------------------------
+The "1-my_list" module
+============================
 
-Class MyList can store a list
-Has a function print_sorted to print the list in MyList sorted
+Using "print_sorted"
+---------------------
 
-First import class "MyList"
+This is a text file in reStructured Text format. First import ``print_sorted`` from the ``1-my_list`` module:
 
     >>> MyList = __import__('1-my_list').MyList
 
 Now use it:
 
-Basic MyList usage (pos, neg, zero):
     >>> my_list = MyList()
-    >>> my_list.append(-1)
+    >>> my_list.print_sorted()
+    []
+
+    >>> a_list = MyList('a')
+    >>> a_list.print_sorted()
+    ['a']
+
+    >>> str_list = MyList('string')
+    >>> str_list.print_sorted()
+    ['g', 'i', 'n', 'r', 's', 't']
+
+    >>> my_list.append(1)
     >>> my_list.append(4)
+    >>> my_list.append(2)
     >>> my_list.append(3)
-    >>> my_list.append(0)
-    >>> print(my_list)
-    [-1, 4, 3, 0]
-
-Basic print_sorted usage:
+    >>> my_list.append(5)
     >>> my_list.print_sorted()
-    [-1, 0, 3, 4]
+    [1, 2, 3, 4, 5]
 
-Big int MyList usage:
-    >>> my_list = MyList()
-    >>> my_list.append(999999999999)
-    >>> my_list.append(-1)
-    >>> my_list.append(0)
     >>> print(my_list)
-    [999999999999, -1, 0]
+    [1, 4, 2, 3, 5]
 
-Big int print_sorted usage:
+    >>> my_list.print_sorted() == my_list
+    [1, 2, 3, 4, 5]
+    False
+
+    >>> zero_list = MyList()
+    >>> zero_list.append(0)
+    >>> zero_list.append(0)
+    >>> zero_list.append(0)
+    >>> zero_list.append(0)
+    >>> zero_list.append(0)
+    >>> zero_list.print_sorted()
+    [0, 0, 0, 0, 0]
+
+    >>> float_list = MyList(3.5)
+    Traceback (most recent call last):
+    	...
+    TypeError: 'float' object is not iterable
+
+    >>> inf_list = MyList(float('inf'))
+    Traceback (most recent call last):
+    	...
+    TypeError: 'float' object is not iterable
+
+    >>> nan_list = MyList(float('nan'))
+    Traceback (most recent call last):
+    	...
+    TypeError: 'float' object is not iterable
+
+    >>> my_list.append('a')
     >>> my_list.print_sorted()
-    [-1, 0, 999999999999]
+    Traceback (most recent call last):
+    	...
+    TypeError: unorderable types: str() < int()
