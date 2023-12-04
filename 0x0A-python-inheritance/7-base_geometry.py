@@ -1,15 +1,12 @@
 #!/usr/bin/python3
-
 """Write a class BaseGeometry (based on 6-base_geometry.py)."""
 
 
 class BaseGeometry:
     """Reprsent base geometry."""
-
     def area(self):
         """Not yet implemented."""
         raise Exception("area() is not implemented")
-
     def integer_validator(self, name, value):
         """Validate a parameter as an integer.
 
