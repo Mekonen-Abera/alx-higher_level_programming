@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     try:
         for line in sys.stdin:
+            count += 1
             line = line.split()
 
             try:
@@ -38,12 +39,9 @@ if __name__ == "__main__":
             except IndexError:
                 pass
 
-            count += 1
             if count == 10:
                 print_stats(size, status_codes)
                 count = 0
-
-        print_stats(size, status_codes)
 
     except KeyboardInterrupt:
         print_stats(size, status_codes)
