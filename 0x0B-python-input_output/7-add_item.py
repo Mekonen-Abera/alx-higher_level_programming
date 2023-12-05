@@ -1,24 +1,19 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
+
+"""Add all arguments to a Python list and save them to a file."""
+
+
 import sys
-import json
-from typing import List
 
-def save_to_json_file(my_obj: List, filename: str) -> None:
-    """Saves an object to a JSON file."""
-    with open(filename, mode='w', encoding='utf-8') as f:
-        json.dump(my_obj, f)
+if __name__ == "__main__":
+    save_to_json_file = __import__('7-save_to_json_file').save_to_json_file
+    load_from_json_file = \
+        __import__('8-load_from_json_file').load_from_json_file
 
-def load_from_json_file(filename: str) -> List:
-    """Loads an object from a JSON file."""
-    with open(filename, mode='r', encoding='utf-8') as f:
-        return json.load(f)
-
-if __name__ == '__main__':
-    args = sys.argv[1:]
-    filename = 'add_item.json'
     try:
-        my_list = load_from_json_file(filename)
+        items = load_from_json_file("add_item.json")
     except FileNotFoundError:
-        my_list = []
-    my_list.extend(args)
-    save_to_json_file(my_list, filename)
+        items = []
+    items.extend(sys.argv[1:])
+    save_to_json_file(items, "add_item.json")
+
