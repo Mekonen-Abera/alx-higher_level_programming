@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+ import sys
 """Reads from standard input and computes metrics.
 
 After every ten lines or the input of a keyboard interruption (CTRL + C),
@@ -15,13 +16,13 @@ def print_stats(size, status_codes):
         size (int): The accumulated read file size.
         status_codes (dict): The accumulated count of status codes.
     """
+
     print("File size: {}".format(size))
     for key in sorted(status_codes):
         print("{}: {}".format(key, status_codes[key]))
 
 
 if __name__ == "__main__":
-    import sys
 
     size = 0
     status_codes = {}
@@ -55,6 +56,7 @@ if __name__ == "__main__":
         print_stats(size, status_codes)
 
     except KeyboardInterrupt:
+
         print_stats(size, status_codes)
         raise
 
