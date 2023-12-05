@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """A script that reads stdin line by line and computes metrics:"""
 
-
 def print_stats(size, status_codes):
     """Print accumulated metrics.
     Args:
@@ -25,7 +24,7 @@ if __name__ == "__main__":
         for line in sys.stdin:
             if count == 10:
                 print_stats(size, status_codes)
-                count = 1
+                count = 0
             else:
                 count += 1
 
