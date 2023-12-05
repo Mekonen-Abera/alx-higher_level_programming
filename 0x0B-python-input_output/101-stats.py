@@ -22,12 +22,6 @@ if __name__ == "__main__":
 
     try:
         for line in sys.stdin:
-            if count == 10:
-                print_stats(size, status_codes)
-                count = 0
-            else:
-                count += 1
-
             line = line.split()
 
             try:
@@ -43,6 +37,11 @@ if __name__ == "__main__":
                         status_codes[line[-2]] += 1
             except IndexError:
                 pass
+
+            count += 1
+            if count == 10:
+                print_stats(size, status_codes)
+                count = 0
 
         print_stats(size, status_codes)
 
