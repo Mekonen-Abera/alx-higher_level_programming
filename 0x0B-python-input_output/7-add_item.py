@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""A script that adds all arguments to a Python list"""
+"""Define script that adds all arguments to a Python list, 
+   and then save them to a file:"""
 
 import sys
 
@@ -10,9 +11,11 @@ try:
     lst = load_from_json_file("add_item.json")
 except:
     lst = []
-    argc = len(sys.argv)
+
+argc = len(sys.argv)
 
 if argc > 1:
     for i in range(1, argc):
         lst.append(sys.argv[i])
-        save_to_json_file(lst, "add_item.json")
+
+save_to_json_file(lst, "add_item.json")
