@@ -1,19 +1,24 @@
-#!/usr/bin/python3
-"""Add item script."""
+#!/usr/bin/env python3
 import sys
+import json
+from typing import List
 
-save_to_json_file = __import__('5-save_to_json_file').save_to_json_file
-load_from_json_file = __import__('6-load_from_json_file').load_from_json_file
+def save_to_json_file(my_obj: List, filename: str) -> None:
+    """Saves an object to a JSON file."""
+    with open(filename, mode='w', encoding='utf-8') as f:
+        json.dump(my_obj, f)
 
-try:
-    lst = load_from_json_file("add_item.json")
-except:
-    lst = []
+def load_from_json_file(filename: str) -> List:
+    """Loads an object from a JSON file."""
+    with open(filename, mode='r', encoding='utf-8') as f:
+        return json.load(f)
 
-argc = len(sys.argv)
-
-if argc > 1:
-    for i in range(1, argc):
-        lst.append(sys.argv[i])
-
-save_to_json_file(lst, "add_item.json")
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    filename = 'add_item.json'
+    try:
+        my_list = load_from_json_file(filename)
+    except FileNotFoundError:
+        my_list = []
+    my_list.extend(args)
+    save_to_json_file(my_list, filename)
