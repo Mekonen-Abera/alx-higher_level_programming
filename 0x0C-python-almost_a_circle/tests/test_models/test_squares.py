@@ -1,200 +1,342 @@
 #!/usr/bin/python3
-"""
-Unittests for Square Class
-"""
-
+"""Unittest for Square Class Attributes"""
 import unittest
-import json
-import sys
-from os import path, remove
-import os
-from io import StringIO
-import io
-from models.base import Base
-from models.rectangle import Rectangle
 from models.square import Square
-from contextlib import redirect_stdout
+from models.rectangle import Rectangle
+from models.base import Base
+from io import StringIO
+import sys
+import os
 
 
-class TestSquare(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        pass
-
-    @classmethod
-    def tearDownClass(cls):
-        pass
+class TestSquareClass(unittest.TestCase):
+    """Test scenarios  for Class Square"""
 
     def setUp(self):
-        # Create instances of the Square class for testing
-        Base.__Base__nb_objects = 0
-        self.s1 = Square(1)
-        self.s2 = Square(5, 2)
-        self.s3 = Square(10, 3, 1)
-        self.s4 = Square(10, 3, 4, 0)
+        """Define  method"""
+        self.s1 = Square(5)
+        self.s2 = Square(2, 2)
+        self.s3 = Square(3, 1, 3)
+        self.s4 = Square(4, 1, 1, 20)
 
     def tearDown(self):
-        # Delete instances of the Square class after testing
+        Base._Base__nb_objects = 0
         del self.s1
         del self.s2
         del self.s3
         del self.s4
-        Base.__Base__nb_objects = 0
 
-    def test_instance(self):
-        # Test instantiation of Square instances
-        x = self.s1.id
-        self.assertEqual(self.s1.id, x)
-        self.assertEqual(self.s4.id, 0)
-        self.assertIsNot(self.s1, Base)
-        self.assertIsInstance(self.s1, Base)
-        self.assertNotEqual(self.s1.id, self.s2.id)
-        self.assertEqual(self.s3.id, 82)
-        self.assertIsInstance(self.s1, Base)
-        self.assertTrue(issubclass(type(self.s1), Rectangle), True)
+    def testSquare_zero_size(self):
+        """Testing class Square with zero size"""
+        with self.assertRaises(ValueError):
+            self.s1 = Square(0)
+
+    def testSquare_negative_values_size(self):
+        """Test class Square with negative values"""
+        with self.assertRaises(ValueError):
+            self.s1 = Square(-5)
+
+    def testSquare_negative_values_x(self):
+        """Testing class Square with negative values"""
+        with self.assertRaises(ValueError):
+            self.s1 = Square(1, -5)
+
+    def testSquare_negative_values_y(self):
+        """Testing class Square with negative values"""
+        with self.assertRaises(ValueError):
+            self.s1 = Square(1, 2, -5)
+
+    def testSquare_str_values_size(self):
+        """Testing class Square with string values"""
         with self.assertRaises(TypeError):
-            r_mthan4 = Square(5, 2, 3, 2, 1, 4)
+            self.s1 = Square('-5')
 
-    def test_attributes_assignment(self):
-        # Test attribute assignments of Square instances
-        self.assertEqual(self.s3.size, 10)
-        self.assertEqual(self.s3.x, 3)
-        self.assertEqual(self.s3.y, 1)
-        self.assertEqual(self.s4.size, 10)
-        self.assertEqual(self.s4.x, 3)
-        self.assertEqual(self.s4.y, 4)
-        self.assertEqual(self.s3.id, 76)
+    def testSquare_str_values_x(self):
+        """Testing class Square with string values"""
         with self.assertRaises(TypeError):
-            r = Rectangle(x=1, y=1)
+            self.s1 = Square(1, '-5')
 
-    def test_private_cls(self):
-        # Test access to private class attribute
-        with self.assertRaises(AttributeError):
-            print(self.s3.__nb_objects)
-
-    def test_private_instance_atr(self):
-        # Test access to private instance attributes
-        with self.assertRaises(AttributeError):
-            print(self.s3.__size)
-        with self.assertRaises(AttributeError):
-            print(self.s3.__x)
-        with self.assertRaises(AttributeError):
-            print(self.s3.__y)
-
-    def test_public_instance_atr(self):
-        # Test access and modification of public instance attributes
-        test_id = Square(10, 12, 1, 2)
-        test_id.id = 200
-
-    def test_different_val_size(self):
-        # Test instantiation with different values for size
-        with self.assertRaisesRegex(TypeError, 'width must be an integer'):
-            Square("a")
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square([9, 3])
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square(float('-inf'))
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square(float('inf'))
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square('NaN')
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square(3.16)
-        with self.assertRaisesRegex(TypeError, "width must be an integer"):
-            Square("karen")
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
-            Square(0)
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
-            Square(-10)
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
-            Square(size=0)
-        with self.assertRaisesRegex(ValueError, "width must be > 0"):
-            Square(size=-10)
-
-    def test_other_input(self):
-        # Test instantiation with invalid input types
-        with self.assertRaises(Exception) as e:
-            Square("karen", 3, 4)
-        self.assertTrue('width must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(2, {2, 1}, 4)
-        self.assertTrue('x must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(2, 3, [1])
-        self.assertTrue('y must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(2, 3, 4.1)
-        self.assertTrue('y must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(float('-inf'), 2, 0, 0)
-        self.assertTrue('width must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(float('NaN'), 2, 0, 0)
-        self.assertTrue('width must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(4.5, 2, 0, 0)
-        self.assertTrue('width must be an integer' in str(e.exception))
-        with self.assertRaises(Exception) as e:
-            Square(2, 2.0, 0, 0)
-        self.assertTrue('x must be an integer' in str(e.exception))
-
-    def test_num_attributes(self):
-        # Test instantiation with different numbers of attributes
+    def testSquare_str_values_y(self):
+        """Testing class Square with string values"""
         with self.assertRaises(TypeError):
-            s_empty = Square()
-        s_dos = Square(5, 4)
-        self.assertEqual(s_dos.width, 5)
-        self.assertEqual(s_dos.x, 4)
-        s_tres = Square(5, 4, 3)
-        self.assertEqual(s_tres.y, 3)
-        s_cuatro = Square(5, 4, 3, 1)
-        self.assertEqual(s_cuatro.id, 1)
+            self.s1 = Square(1, 2, '-5')
 
-    def test_public_methods(self):
-        # Test modification of public instance attributes
-        self.s1.width = 10
-        self.s1.x = 2
-        self.s1.y = 3
-        self.assertEqual(self.s1.width, 10)
-        self.assertEqual(self.s1.x, 2)
-        self.assertEqual(self.s1.y, 3)
+    def testSquare_size(self):
+        """Testing Square class with Height and Width it inherits
+        from parent class Rectangle outputs"""
+        # Test width
+        result = self.s1.width
+        self.assertEqual(result, 5)
+        # Test height
+        result = self.s1.height
+        self.assertEqual(result, 5)
 
-    def test_area(self):
-        # Test the area method
-        x = Square(3)
-        self.assertEqual(x.area(), 9)
+    def testSquare_area(self):
+        """Testing area() method from parent class"""
+        result = self.s1.area()
+        self.assertEqual(result, 25)
 
-    def test_str(self):
-        # Test the string representation method
-        news = Square(4, 6, 2, 1)
-        self.assertEqual(str(news), "[Square] (1) 6/2 - 4")
+    def testSquare_str(self):
+        """Testing __str__ method for class square"""
+        result = self.s4.__str__()
+        self.assertEqual("[Square] (20) 1/1 - 4", result)
 
-    def test_update(self):
-        # Test the update method
-        news = Square(4, 6, 2, 1)
-        news.update(89)
-        self.assertEqual(str(news), "[Square] (89) 6/2 - 4")
-        news.update(89, 2)
-        self.assertEqual(str(news), "[Square] (89) 6/2 - 2")
-        news.update(89, 2, 3)
-        self.assertEqual(str(news), "[Square] (89) 3/2 - 2")
-        news.update(89, 2, 3, 4)
-        self.assertEqual(str(news), "[Square] (89) 3/4 - 2")
+    def testSquare_display(self):
+        """Testing display() method inherited from parent class"""
+        cap_output = StringIO()
+        sys.stdout = cap_output
+        result = self.s2.display()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(cap_output.getvalue(), "  ##\n  ##\n")
 
-    def test_update_1(self):
-        # Test the update method with named arguments
-        new2 = Square(1, 1, 1, 50)
+    def testSquare_setter(self):
+        """Testing setter and getter methods for class Square"""
+        self.s1.size = 10
+        self.assertEqual(10, self.s1.size)
+        result = self.s2.size
+        self.assertEqual(result, 2)
 
-        new2.update(size=8, x=7)
-        self.assertEqual(str(new2), "[Square] (50) 7/1 - 8")
+    def testSquare_update_id(self):
+        """Testing update() method"""
+        # update id
+        self.s4.update(22)
+        result = self.s4.id
+        self.assertEqual(result, 22)
 
-        new2.update(y=1, size=2, x=3, id=89)
-        self.assertEqual(str(new2), "[Square] (89) 3/1 - 2")
+    def testSquare_update_size(self):
+        """Testing update() method"""
+        # update size
+        self.s4.update(22, 4)
+        result = self.s4.size
+        self.assertEqual(result, 4)
 
-        new2.update(id=8, size=5)
-        self.assertEqual(str(new2), "[Square] (8) 3/1 - 5")
+    def testSquare_update_x(self):
+        """Testing update() method"""
+        # update x
+        self.s4.update(22, 4, 4)
+        result = self.s4.x
+        self.assertEqual(result, 4)
 
-    if __name__ == '__main__':
-        unittest.main()
+    def testSquare_update_y(self):
+        """Testing update() method"""
+        # update y
+        self.s4.update(22, 4, 4, 5)
+        result = self.s4.y
+        self.assertEqual(result, 5)
 
+    def test_update_negative(self):
+        """Testing update() with negative  inputs"""
+        # test update () with negative values
+        with self.assertRaises(ValueError):
+            result = self.s2.update(89, 2, 3, -4)
+
+    def test_update_negative_x(self):
+        """Testing update() with negative  inputs"""
+        with self.assertRaises(ValueError):
+            result = self.s2.update(89, 2, -3, 4)
+
+    def test_update_negative_size(self):
+        """Testing update() with negative  inputs"""
+        with self.assertRaises(ValueError):
+            result = self.s2.update(89, -2, 3, 4)
+
+    def test_update_non_integer_yFloat(self):
+        """Testing update() with non integers"""
+        with self.assertRaises(TypeError):
+            result = self.s3.update(89, 2, 3, 5.1)
+
+    def test_update_non_integer_xFloat(self):
+        """Testing update() with non integers"""
+        with self.assertRaises(TypeError):
+            result = self.s3.update(89, 2, 4.2, 5)
+
+    def test_update_non_integer_sizeTuple(self):
+        """Testing update() with non integers"""
+        with self.assertRaises(TypeError):
+            result = self.s3.update(89, (3, 3), 4, 5)
+
+    def test_update_non_integer_yDict(self):
+        """Testing update() with non integers"""
+        with self.assertRaises(TypeError):
+            result = self.s3.update(89, 2, 3, {4})
+
+    def test_update_non_integer_sizeStr(self):
+        """Testing update() with non integers"""
+        with self.assertRaises(TypeError):
+            result = self.s3.update(89, '2', 4, 5)
+
+    def test_update_kwargs_id(self):
+        """Testing update() with kwargs"""
+        result = self.s2.update(id=4)
+        self.assertEqual(4, self.s2.id)
+
+    def test_update_kwargs_size(self):
+        """Testing update() with kwargs"""
+        result = self.s2.update(size=9)
+        self.assertEqual(9, self.s2.size)
+
+    def test_update_kwargs_x(self):
+        """Testing update() with kwargs"""
+        result = self.s2.update(x=22)
+        self.assertEqual(22, self.s2.x)
+
+    def test_update_kwargs_y(self):
+        """Testing update() with kwargs"""
+        result = self.s2.update(y=8)
+        self.assertEqual(8, self.s2.y)
+
+    def testSquare_toDict(self):
+        """Testing to_dictionary() method in Square class"""
+        result = self.s4.to_dictionary()
+        self.assertEqual(result, {"id": 20, "size": 4, "x": 1, "y": 1})
+
+    def testSquare_toDict_withOne_arg(self):
+        """Testing to_dictionary() method in Square class"""
+        result = self.s1.to_dictionary()
+        self.assertEqual(result, {"id": 1, "size": 5, "x": 0, "y": 0})
+
+    def testSquare_initializer(self):
+        """Testing to_dictionary() method in Square class"""
+        with self.assertRaises(TypeError):
+            self.s1 = Square()
+
+    def testToJson_str(self):
+        """Testing Base method to_json_string()"""
+        _result = """[{"id": 20, "size": 4, "x": 1, "y": 1}]"""
+        dict_rep = self.s4.to_dictionary()
+        result = Base.to_json_string([dict_rep])
+        self.assertEqual(result, _result)
+
+    def testToJson_str_withNone(self):
+        """Testing Base method to_json_string()"""
+        # test with None
+        _result = "[]"
+        result = Base.to_json_string(None)
+        self.assertEqual(result, _result)
+
+    def testToJson_str_withEmptyList(self):
+        """Testing Base method to_json_string()"""
+        # test with empty list
+        _result = "[]"
+        list_rep = []
+        result = Base.to_json_string(list_rep)
+        self.assertEqual(result, _result)
+
+    def test_save_to_file_None(self):
+        """Testing save_to_file() method from Base class with Class Square
+        with None input"""
+        _result = "[]\n"
+        Square.save_to_file(None)
+        try:
+            with open("Square.json", "r") as file:
+                cap_output = StringIO()
+                sys.stdout = cap_output
+                print(file.read())
+                sys.stdout = sys.__stdout__
+                self.assertEqual(cap_output.getvalue(), _result)
+        except FileNotFoundError as fne:
+            pass
+
+    def test_save_to_file(self):
+        """Testing save_to_file() method from Base class with Class Square
+        with list_objs input"""
+        _result = """[{"id": 3, "size": 3, "x": 1, "y": 3}, {"id": 20, "size":\
+ 4, "x": 1, "y": 1}]\n"""
+        Square.save_to_file([self.s3, self.s4])
+        try:
+            with open("Square.json", "r") as file:
+                cap_output = StringIO()
+                sys.stdout = cap_output
+                print(file.read())
+                sys.stdout = sys.__stdout__
+                self.assertEqual(cap_output.getvalue(), _result)
+        except FileNotFoundError as fne:
+            pass
+
+    def test_from_json_string(self):
+        """Testing from_json_string() Base class method with class Square"""
+        list_input = [
+                        {'id': 89, 'size': 4, 'x': 5, 'y': 6},
+                        {'id': 7, 'size': 7, 'x': 3, 'y': 4}
+        ]
+        json_list_input = Square.to_json_string(list_input)
+        result = Square.from_json_string(json_list_input)
+        _result = [{'size': 4, 'id': 89, 'x': 5, 'y': 6}, {'size': 7, 'id': 7,
+                                                           'x': 3, 'y': 4}]
+        self.assertEqual(result, _result)
+
+    def test_create_noID(self):
+        """Testing create() method in Base class"""
+        _result = "[Square] (20) 1/1 - 4\n"
+        # test with ID not defined
+        dict_rep_s4 = self.s4.to_dictionary()
+        cap_output = StringIO()
+        sys.stdout = cap_output
+        result = Square.create(**dict_rep_s4)
+        print(result)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(cap_output.getvalue(), _result)
+
+    def test_create_withID(self):
+        """Testing create() method in Base class"""
+        # test with predefined ID
+        # self.s3 = Square(3, 1, 3)
+        _result = "[Square] (3) 1/3 - 3\n"
+        dict_rep_s3 = self.s3.to_dictionary()
+        cap_output = StringIO()
+        sys.stdout = cap_output
+        result = Square.create(**dict_rep_s3)
+        print(result)
+        sys.stdout = sys.__stdout__
+        self.assertEqual(cap_output.getvalue(), _result)
+
+    def test_load_from_file_noFile(self):
+        """Testing load_from_file method in Base class"""
+        # Test when the file does not exist
+        filename = "Square.json"
+        if os.path.exists(filename):
+            # Delete the file
+            os.remove(filename)
+
+        _result = []
+        list_squares = [self.s3, self.s4]
+        result = Square.load_from_file()
+        self.assertEqual(result, _result)
+
+    def test_load_from_file_withFile(self):
+        """Testing load_from_file method in Base class"""
+        # Test when file exists
+        _result = [self.s3, self.s4]
+        result = Square.load_from_file()
+        res_list = []
+        _res_list = []
+        if len(_result) == len(result):
+            for i in range(len(_result)):
+                res_list.append(result[i])
+                _res_list.append(_result[i])
+        self.assertEqual(_res_list, res_list)
+
+    def test_load_from_file_csv_noFile(self):
+        """Testing load_from_file method in Base class"""
+        # Test when the file does not exist
+        filename = "Square.csv"
+        if os.path.exists(filename):
+            # Delete the file
+            os.remove(filename)
+
+        _result = []
+        result = Square.load_from_file_csv()
+        self.assertEqual(result, _result)
+
+    def test_load_from_file_csv_withFile(self):
+        """Testing load_from_file method in Base class"""
+        # Test when file exists
+        _result = [self.s3, self.s4]
+        result = Square.load_from_file_csv()
+        res_list = []
+        _res_list = []
+        if len(_result) == len(result):
+            for i in range(len(_result)):
+                res_list.append(result[i])
+                _res_list.append(_result[i])
+        self.assertEqual(_res_list, res_list)
