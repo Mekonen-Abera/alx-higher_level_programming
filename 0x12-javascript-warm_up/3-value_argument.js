@@ -1,4 +1,5 @@
 #!/usr/bin/node
-exports.add = function add (a, b) {
-  return a + b;
-};
+if (process.argv[2] !== undefined) {
+    console.log(process.argv[2]);
+} else {
+    console.log("No argument");
