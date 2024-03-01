@@ -5,17 +5,15 @@ body decoded in utf-8. It also handles HTTP errors.
 
 Usage: ./3-error_code.py <URL>
 """
-from sys import argv
-from urllib.request import Request, urlopen
-from urllib.error import HTTPError
-
+import sys
+from urllib import request, error
 
 if __name__ == "__main__":
-    url = argv[1]
-    req = Request(url)
+    url = sys.argv[1]
 
+    own_request = request.Request(url)
     try:
-        with urlopen(req) as response:
+        with request.urlopen(own_request) as response:
             print(response.read().decode("ascii"))
-    except HTTPError as e:
+    except error.HTTPError as e:
         print("Error code: {}".format(e.code))
