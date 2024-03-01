@@ -1,16 +1,17 @@
 #!/usr/bin/python3
-""" Takes in a URL, sends a request to the URL and displays the
-value of the X-Request-Id variable found in the header of the response.
+"""
+Script that takes in a URL, sends a request to the URL and displays
+the value of the X-Request-Id variable found in the header of the response.
 
-Usage: ./1-hbtn_header.py <URL> """
-import sys
+Usage: ./1-hbtn_header.py <URL>
+"""
+from sys import argv
+from urllib.request import Request, urlopen
 
-import urllib.request
 
 if __name__ == "__main__":
-    url = sys.argv[1]
+    url = argv[1]
+    req = Request(url)
 
-    request = urllib.request.Request(url)
-    with urllib.request.urlopen(request) as response:
+    with urlopen(req) as response:
         print(dict(response.headers).get("X-Request-Id"))
-
