@@ -5,7 +5,9 @@ the value of the X-Request-Id variable in the response header.
 
 Usage: ./5-hbtn_header.py <URL>
 """
+
 import requests
+
 from sys import argv
 
 
