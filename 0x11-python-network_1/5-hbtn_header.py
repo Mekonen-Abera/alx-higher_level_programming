@@ -1,13 +1,11 @@
 #!/usr/bin/python3
 """
-Script that accepts a URL, sends a request to the URL, and shows 
-the value of the X-Request-Id variable in the response header.
+Script that accepts in a URL, sends a request to the URL and displays the
+value of the variable X-Request-Id in the response header.
 
 Usage: ./5-hbtn_header.py <URL>
 """
-
 import requests
-
 from sys import argv
 
 
