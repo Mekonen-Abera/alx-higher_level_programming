@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-#!/usr/bin/python3
 """Script that display a github ID based on the credentials"""
 import sys
 
