@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """
-Script that receives a URL, sends a request to the URL
-and shows the response body.
+Script that takes in a URL, sends a request to the URL and displays
+the body of the response.
 
 Usage: ./7-error_code.py <URL>
- - Manages HTTP errors. 
+  - Handles HTTP errors.
 """
 from sys import argv
 import requests
